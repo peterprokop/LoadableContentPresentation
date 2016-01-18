@@ -29,7 +29,7 @@ extension UIActivityIndicatorView: LoadingProgressView {}
 
 //MARK: - LoadableContentView
 
-protocol LoadableContentViewType: class, ContentLoadingStatefull {
+protocol LoadableContentViewPresenterType: class, ContentLoadingStatefull {
     
     var contentView: ContentView { get }
     var noContentView: AnyView { get }
@@ -45,7 +45,7 @@ protocol LoadableContentViewType: class, ContentLoadingStatefull {
     func reloadData()
 }
 
-extension LoadableContentViewType {
+extension LoadableContentViewPresenterType {
     func reloadData() {
         contentView.reloadData()
     }
@@ -55,7 +55,7 @@ extension LoadableContentViewType {
     }
 }
 
-extension LoadableContentViewType {
+extension LoadableContentViewPresenterType {
 
     var currentState: ContentLoadingState {
         return stateMachine.state
@@ -174,7 +174,7 @@ extension LoadableContentViewType {
 
 //MARK: - Plain Views
 
-class LoadableContentView: LoadableContentViewType {
+class LoadableContentViewPresenter: LoadableContentViewPresenterType {
     
     var contentView: ContentView
     var noContentView: AnyView
@@ -203,7 +203,7 @@ extension UIView: ContentView {
 
 //MARK: - Table Views
 
-class LoadableContentTableView: LoadableContentViewType {
+class LoadableContentTableViewPresenter: LoadableContentViewPresenterType {
     
     var tableView: UITableView
     
@@ -230,7 +230,7 @@ class LoadableContentTableView: LoadableContentViewType {
 
 //MARK: - Collection Views
 
-class LoadableContentCollectionView: LoadableContentViewType {
+class LoadableContentCollectionViewPresenter: LoadableContentViewPresenterType {
 
     var collectionView: UICollectionView
     

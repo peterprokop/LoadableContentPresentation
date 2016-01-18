@@ -4,10 +4,10 @@ class MyErrorView: UIView, ErrorView {
     var error: ErrorType!
 }
 
-class IntsLoadableTableView: UIView {
+class IntsMoreLoadableTableView: UIView {
     
     @IBOutlet weak var tableView: UITableView!
-
+    
     lazy var noContentView: UIView = {
         let view = UIView(frame: self.bounds)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
@@ -33,13 +33,6 @@ class IntsLoadableTableView: UIView {
         return view
     }()
     
-    lazy var content: LoadableContentTableView = {
-        return LoadableContentTableView(tableView: self.tableView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
-    }()
-}
-
-class IntsMoreLoadableTableView: UIView {
-    
     lazy var loadingMoreProgressView: LoadingProgressView = {
         let view = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         view.sizeToFit()
@@ -55,11 +48,10 @@ class IntsMoreLoadableTableView: UIView {
         return view
     }()
 
-    lazy var moreContent: MoreLoadableContentTableView = {
-        return MoreLoadableContentTableView(content: self.contentView.content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+    lazy var moreContent: MoreLoadableContentTableViewPresenter = {
+        let content = LoadableContentTableViewPresenter(tableView: self.tableView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
+        return MoreLoadableContentTableViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
     }()
-    
-    @IBOutlet weak var contentView: IntsLoadableTableView!
     
 }
 

@@ -1,9 +1,9 @@
 import UIKit
 
-class IntsLoadableCollectionView: UIView {
+class IntsMoreLoadableCollectionView: UIView {
     
     @IBOutlet weak var collectionView: UICollectionView!
-
+    
     lazy var noContentView: UIView = {
         let view = UIView(frame: self.bounds)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
@@ -28,13 +28,6 @@ class IntsLoadableCollectionView: UIView {
         self.addSubview(view)
         return view
     }()
-
-    lazy var content: LoadableContentCollectionView = {
-        return LoadableContentCollectionView(collectionView: self.collectionView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
-    }()
-}
-
-class IntsMoreLoadableCollectionView: UIView {
     
     lazy var loadingMoreProgressView: LoadingProgressView = {
         let view = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
@@ -51,13 +44,12 @@ class IntsMoreLoadableCollectionView: UIView {
         return view
     }()
 
-    lazy var moreContent: MoreLoadableContentCollectionView = {
-        return MoreLoadableContentCollectionView(content: self.contentView.content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+    lazy var moreContent: MoreLoadableContentCollectionViewPresenter = {
+        let content = LoadableContentCollectionViewPresenter(collectionView: self.collectionView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
+        return MoreLoadableContentCollectionViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
     }()
 
-    @IBOutlet weak var contentView: IntsLoadableCollectionView!
 }
-
 
 class CollectionViewController: UIViewController {
     

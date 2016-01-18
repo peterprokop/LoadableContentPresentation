@@ -1,13 +1,13 @@
 import UIKit
 
-protocol ScrollableContentViewContainerType: LoadableContentViewType {
+protocol ScrollableContentViewContainerType: LoadableContentViewPresenterType {
     typealias ScrollableContentViewType: UIScrollView
     
     var scrollableContentView: ScrollableContentViewType { get }
 }
 
 ///Wraps LoadableContentView adding loading more functionality
-protocol MoreLoadableContentViewType: class, ContentLoadingStatefull {
+protocol MoreLoadableContentViewPresenterType: class, ContentLoadingStatefull {
     typealias ContentViewType: ScrollableContentViewContainerType
     
     var scrollableContentViewContainer: ContentViewType { get }
@@ -36,7 +36,7 @@ struct Pagination {
     let limit: Int
 }
 
-extension MoreLoadableContentViewType
+extension MoreLoadableContentViewPresenterType
 {
 
     //TODO: have a dedicated state machine that handles loading more state
@@ -162,7 +162,7 @@ extension MoreLoadableContentViewType
 
 //MARK: - Table Views
 
-extension MoreLoadableContentViewType where
+extension MoreLoadableContentViewPresenterType where
     ContentViewType.ScrollableContentViewType == UITableView
 {
     
@@ -208,16 +208,16 @@ extension MoreLoadableContentViewType where
     
 }
 
-class MoreLoadableContentTableView: MoreLoadableContentViewType {
+class MoreLoadableContentTableViewPresenter: MoreLoadableContentViewPresenterType {
     
-    var scrollableContentViewContainer: LoadableContentTableView {
+    var scrollableContentViewContainer: LoadableContentTableViewPresenter {
         return content
     }
     
     var loadingMoreProgressViewContainer: AnyView
     var loadingMoreProgressView: LoadingProgressView
     
-    var content: LoadableContentTableView
+    var content: LoadableContentTableViewPresenter
     var pagination: Pagination
     
     weak var delegate: ContentLoadingStateTransitionDelegate? {
@@ -226,7 +226,7 @@ class MoreLoadableContentTableView: MoreLoadableContentViewType {
         }
     }
 
-    init(content: LoadableContentTableView, loadingMoreProgressViewContainer: UIView, loadingMoreProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
+    init(content: LoadableContentTableViewPresenter, loadingMoreProgressViewContainer: UIView, loadingMoreProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
         self.content = content
         self.loadingMoreProgressViewContainer = loadingMoreProgressViewContainer
         self.loadingMoreProgressView = loadingMoreProgressView
@@ -235,7 +235,7 @@ class MoreLoadableContentTableView: MoreLoadableContentViewType {
     
 }
 
-extension LoadableContentTableView: ScrollableContentViewContainerType {
+extension LoadableContentTableViewPresenter: ScrollableContentViewContainerType {
     var scrollableContentView: UITableView {
         return tableView
     }
@@ -243,7 +243,7 @@ extension LoadableContentTableView: ScrollableContentViewContainerType {
 
 //MARK: - Collection Views
 
-extension MoreLoadableContentViewType where
+extension MoreLoadableContentViewPresenterType where
     ContentViewType.ScrollableContentViewType == UICollectionView
 {
     
@@ -298,16 +298,16 @@ private func invalidationContextToUpdateLoadingMoreSupplementaryView(collectionV
     return context
 }
 
-class MoreLoadableContentCollectionView: MoreLoadableContentViewType {
+class MoreLoadableContentCollectionViewPresenter: MoreLoadableContentViewPresenterType {
     
-    var scrollableContentViewContainer: LoadableContentCollectionView {
+    var scrollableContentViewContainer: LoadableContentCollectionViewPresenter {
         return content
     }
     
     var loadingMoreProgressViewContainer: AnyView
     var loadingMoreProgressView: LoadingProgressView
     
-    var content: LoadableContentCollectionView
+    var content: LoadableContentCollectionViewPresenter
     var pagination: Pagination
     
     weak var delegate: ContentLoadingStateTransitionDelegate? {
@@ -316,7 +316,7 @@ class MoreLoadableContentCollectionView: MoreLoadableContentViewType {
         }
     }
     
-    init(content: LoadableContentCollectionView, loadingMoreProgressViewContainer: UIView, loadingMoreProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
+    init(content: LoadableContentCollectionViewPresenter, loadingMoreProgressViewContainer: UIView, loadingMoreProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
         self.content = content
         self.loadingMoreProgressViewContainer = loadingMoreProgressViewContainer
         self.loadingMoreProgressView = loadingMoreProgressView
@@ -325,7 +325,7 @@ class MoreLoadableContentCollectionView: MoreLoadableContentViewType {
     
 }
 
-extension LoadableContentCollectionView: ScrollableContentViewContainerType {
+extension LoadableContentCollectionViewPresenter: ScrollableContentViewContainerType {
     var scrollableContentView: UICollectionView {
         return collectionView
     }
