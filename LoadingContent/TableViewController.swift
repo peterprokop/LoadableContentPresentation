@@ -4,7 +4,7 @@ class MyErrorView: UIView, ErrorView {
     var error: ErrorType!
 }
 
-class IntsMoreLoadableTableView: UIView {
+class IntsPaginatableTableView: UIView {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -48,17 +48,17 @@ class IntsMoreLoadableTableView: UIView {
         return view
     }()
 
-    lazy var moreContent: MoreLoadableContentTableViewPresenter = {
+    lazy var moreContent: PaginatableContentTableViewPresenter = {
         let content = LoadableContentTableViewPresenter(tableView: self.tableView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
-        return MoreLoadableContentTableViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+        return PaginatableContentTableViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
     }()
     
 }
 
 class TableViewController: UIViewController, ContentLoadingStateTransitionDelegate {
     
-    var rootView: IntsMoreLoadableTableView {
-        return view as! IntsMoreLoadableTableView
+    var rootView: IntsPaginatableTableView {
+        return view as! IntsPaginatableTableView
     }
 
     override func viewDidLoad() {

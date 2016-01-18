@@ -1,6 +1,6 @@
 import UIKit
 
-class IntsMoreLoadableCollectionView: UIView {
+class IntsPaginatableCollectionView: UIView {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -44,17 +44,17 @@ class IntsMoreLoadableCollectionView: UIView {
         return view
     }()
 
-    lazy var moreContent: MoreLoadableContentCollectionViewPresenter = {
+    lazy var moreContent: PaginatableContentCollectionViewPresenter = {
         let content = LoadableContentCollectionViewPresenter(collectionView: self.collectionView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
-        return MoreLoadableContentCollectionViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+        return PaginatableContentCollectionViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
     }()
 
 }
 
 class CollectionViewController: UIViewController {
     
-    var rootView: IntsMoreLoadableCollectionView {
-        return view as! IntsMoreLoadableCollectionView
+    var rootView: IntsPaginatableCollectionView {
+        return view as! IntsPaginatableCollectionView
     }
     
     override func viewDidLoad() {

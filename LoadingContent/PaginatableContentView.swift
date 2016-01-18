@@ -7,7 +7,7 @@ protocol ScrollableContentViewContainerType: LoadableContentViewPresenterType {
 }
 
 ///Wraps LoadableContentView adding loading more functionality
-protocol MoreLoadableContentViewPresenterType: class, ContentLoadingStatefull {
+protocol PaginatableContentViewPresenterType: class, ContentLoadingStatefull {
     typealias ContentViewType: ScrollableContentViewContainerType
     
     var scrollableContentViewContainer: ContentViewType { get }
@@ -36,7 +36,7 @@ struct Pagination {
     let limit: Int
 }
 
-extension MoreLoadableContentViewPresenterType
+extension PaginatableContentViewPresenterType
 {
 
     //TODO: have a dedicated state machine that handles loading more state
@@ -162,7 +162,7 @@ extension MoreLoadableContentViewPresenterType
 
 //MARK: - Table Views
 
-extension MoreLoadableContentViewPresenterType where
+extension PaginatableContentViewPresenterType where
     ContentViewType.ScrollableContentViewType == UITableView
 {
     
@@ -208,7 +208,7 @@ extension MoreLoadableContentViewPresenterType where
     
 }
 
-class MoreLoadableContentTableViewPresenter: MoreLoadableContentViewPresenterType {
+class PaginatableContentTableViewPresenter: PaginatableContentViewPresenterType {
     
     var scrollableContentViewContainer: LoadableContentTableViewPresenter {
         return content
@@ -243,7 +243,7 @@ extension LoadableContentTableViewPresenter: ScrollableContentViewContainerType 
 
 //MARK: - Collection Views
 
-extension MoreLoadableContentViewPresenterType where
+extension PaginatableContentViewPresenterType where
     ContentViewType.ScrollableContentViewType == UICollectionView
 {
     
@@ -298,7 +298,7 @@ private func invalidationContextToUpdateLoadingMoreSupplementaryView(collectionV
     return context
 }
 
-class MoreLoadableContentCollectionViewPresenter: MoreLoadableContentViewPresenterType {
+class PaginatableContentCollectionViewPresenter: PaginatableContentViewPresenterType {
     
     var scrollableContentViewContainer: LoadableContentCollectionViewPresenter {
         return content

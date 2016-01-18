@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6446060E1C2960B200FE3DFE /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6446060D1C2960B200FE3DFE /* CollectionViewController.swift */; };
-		644606101C2A116C00FE3DFE /* MoreLoadableContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6446060F1C2A116C00FE3DFE /* MoreLoadableContentView.swift */; };
+		644606101C2A116C00FE3DFE /* PaginatableContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6446060F1C2A116C00FE3DFE /* PaginatableContentView.swift */; };
 		645DFDDB1C283E3B00857A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645DFDDA1C283E3B00857A68 /* AppDelegate.swift */; };
 		645DFDDD1C283E3B00857A68 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645DFDDC1C283E3B00857A68 /* TableViewController.swift */; };
 		645DFDE01C283E3B00857A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 645DFDDE1C283E3B00857A68 /* Main.storyboard */; };
@@ -37,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		6446060D1C2960B200FE3DFE /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
-		6446060F1C2A116C00FE3DFE /* MoreLoadableContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreLoadableContentView.swift; sourceTree = "<group>"; };
+		6446060F1C2A116C00FE3DFE /* PaginatableContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatableContentView.swift; sourceTree = "<group>"; };
 		645DFDD71C283E3B00857A68 /* LoadingContent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoadingContent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DFDDA1C283E3B00857A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		645DFDDC1C283E3B00857A68 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 				6446060D1C2960B200FE3DFE /* CollectionViewController.swift */,
 				64B8638B1C2AAFA4006FB2EF /* ScrollViewController.swift */,
 				645DFDFC1C283E9C00857A68 /* LoadableContentView.swift */,
-				6446060F1C2A116C00FE3DFE /* MoreLoadableContentView.swift */,
+				6446060F1C2A116C00FE3DFE /* PaginatableContentView.swift */,
 				645DFE021C2843BD00857A68 /* ContentLoadingState.swift */,
 				645DFE041C284C9F00857A68 /* StatesDiagram */,
 				645DFE001C28411900857A68 /* StateMachine.swift */,
@@ -228,7 +228,7 @@
 				645DFDFD1C283E9C00857A68 /* LoadableContentView.swift in Sources */,
 				64B8638C1C2AAFA4006FB2EF /* ScrollViewController.swift in Sources */,
 				645DFE011C28411900857A68 /* StateMachine.swift in Sources */,
-				644606101C2A116C00FE3DFE /* MoreLoadableContentView.swift in Sources */,
+				644606101C2A116C00FE3DFE /* PaginatableContentView.swift in Sources */,
 				645DFDDD1C283E3B00857A68 /* TableViewController.swift in Sources */,
 				645DFDDB1C283E3B00857A68 /* AppDelegate.swift in Sources */,
 			);
