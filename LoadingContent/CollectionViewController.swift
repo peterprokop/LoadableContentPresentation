@@ -29,8 +29,8 @@ class IntsLoadableCollectionView: UIView {
         return view
     }()
 
-    lazy var content: LoadableContentCollectionViewOf<[[Int]]> = {
-        return LoadableContentCollectionViewOf(collectionView: self.collectionView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
+    lazy var content: LoadableContentCollectionView = {
+        return LoadableContentCollectionView(collectionView: self.collectionView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
     }()
 }
 
@@ -51,8 +51,8 @@ class IntsMoreLoadableCollectionView: UIView {
         return view
     }()
 
-    lazy var moreContent: MoreLoadableContentCollectionViewOf<[[Int]]> = {
-        return MoreLoadableContentCollectionViewOf(content: self.contentView.content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+    lazy var moreContent: MoreLoadableContentCollectionView = {
+        return MoreLoadableContentCollectionView(content: self.contentView.content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
     }()
 
     @IBOutlet weak var contentView: IntsLoadableCollectionView!

@@ -25,10 +25,11 @@ protocol ContentView: AnyView {
 
 extension UIActivityIndicatorView: LoadingProgressView {}
 
+//TODO: Add refresh indicator view
+
 //MARK: - LoadableContentView
 
-protocol LoadableContentView: class, ContentLoadingStatefull {
-    typealias ContentType
+protocol LoadableContentViewType: class, ContentLoadingStatefull {
     
     var contentView: ContentView { get }
     var noContentView: AnyView { get }
@@ -44,7 +45,7 @@ protocol LoadableContentView: class, ContentLoadingStatefull {
     func reloadData()
 }
 
-extension LoadableContentView {
+extension LoadableContentViewType {
     func reloadData() {
         contentView.reloadData()
     }
@@ -54,7 +55,7 @@ extension LoadableContentView {
     }
 }
 
-extension LoadableContentView {
+extension LoadableContentViewType {
 
     var currentState: ContentLoadingState {
         return stateMachine.state
@@ -173,8 +174,7 @@ extension LoadableContentView {
 
 //MARK: - Plain Views
 
-class LoadableContentViewOf<T>: LoadableContentView {
-    typealias ContentType = T
+class LoadableContentView: LoadableContentViewType {
     
     var contentView: ContentView
     var noContentView: AnyView
@@ -203,8 +203,7 @@ extension UIView: ContentView {
 
 //MARK: - Table Views
 
-class LoadableContentTableViewOf<T>: LoadableContentView {
-    typealias ContentType = T
+class LoadableContentTableView: LoadableContentViewType {
     
     var tableView: UITableView
     
@@ -231,9 +230,8 @@ class LoadableContentTableViewOf<T>: LoadableContentView {
 
 //MARK: - Collection Views
 
-class LoadableContentCollectionViewOf<T>: LoadableContentView {
-    typealias ContentType = T
-    
+class LoadableContentCollectionView: LoadableContentViewType {
+
     var collectionView: UICollectionView
     
     var contentView: ContentView {

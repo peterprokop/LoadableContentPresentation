@@ -87,6 +87,6 @@ protocol ContentLoadingStatefull: Statefull {
     
     weak var delegate: ContentLoadingStateTransitionDelegate? { get set }
     
-    var currentState: StateType { get }
+    var currentState: ContentLoadingState { get }
 }
 

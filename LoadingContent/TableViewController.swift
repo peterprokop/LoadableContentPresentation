@@ -33,8 +33,8 @@ class IntsLoadableTableView: UIView {
         return view
     }()
     
-    lazy var content: LoadableContentTableViewOf<[[Int]]> = {
-        return LoadableContentTableViewOf(tableView: self.tableView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
+    lazy var content: LoadableContentTableView = {
+        return LoadableContentTableView(tableView: self.tableView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
     }()
 }
 
@@ -55,8 +55,8 @@ class IntsMoreLoadableTableView: UIView {
         return view
     }()
 
-    lazy var moreContent: MoreLoadableContentTableViewOf<[[Int]]> = {
-        return MoreLoadableContentTableViewOf(content: self.contentView.content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+    lazy var moreContent: MoreLoadableContentTableView = {
+        return MoreLoadableContentTableView(content: self.contentView.content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
     }()
     
     @IBOutlet weak var contentView: IntsLoadableTableView!
