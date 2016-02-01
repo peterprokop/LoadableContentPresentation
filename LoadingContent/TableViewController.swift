@@ -1,7 +1,7 @@
 import UIKit
 
 class MyErrorView: UIView, ErrorView {
-    var error: ErrorType!
+    var error: ErrorType?
 }
 
 class IntsPaginatableTableView: UIView {
@@ -48,7 +48,7 @@ class IntsPaginatableTableView: UIView {
         return view
     }()
 
-    lazy var moreContent: PaginatableContentTableViewPresenter = {
+    lazy var contentPresenter: PaginatableContentTableViewPresenter = {
         let content = LoadableContentTableViewPresenter(tableView: self.tableView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
         return PaginatableContentTableViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
     }()
@@ -66,25 +66,25 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
         
         view.backgroundColor = UIColor.whiteColor()
         
-        rootView.moreContent.setupInitialState()
-        rootView.moreContent.delegate = self
+        rootView.contentPresenter.setupInitialState()
+        rootView.contentPresenter.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let limit = rootView.moreContent.pagination.limit
+        let limit = rootView.contentPresenter.pagination.limit
         let pageSize = limit*5
         
-        rootView.moreContent.beginLoadingIfNeeded {
+        rootView.contentPresenter.beginLoadingIfNeeded {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC) * 1), dispatch_get_main_queue()) {
                 if self.loadedContent.isEmpty {
                     self.loadedContent = [(0..<pageSize).reduce([Int](), combine: { $0.0 + [$0.1] })]
-                    self.rootView.moreContent.endLoading(true, contentSize: pageSize, error: nil)
+                    self.rootView.contentPresenter.endLoading(pageSize, error: nil)
                 }
                 else {
                     //simulate error when there was content previously
-                    self.rootView.moreContent.endLoading(false, contentSize: 0, error: NSError(domain: "", code: 0, userInfo: nil))
+                    self.rootView.contentPresenter.endLoading(0, error: NSError(domain: "", code: 0, userInfo: nil))
                 }
             }
         }
@@ -120,13 +120,13 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        rootView.moreContent.beginLoadingMoreIfNeeded { offset, limit in
+        rootView.contentPresenter.beginLoadingMoreIfNeeded { offset, limit in
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.5)), dispatch_get_main_queue()) {
                 let newContent = /*[[Int]]() // */[(offset..<offset+limit).reduce([Int](), combine: { $0.0 + [$0.1] })]
                 self.loadedContent += newContent
                 
-                self.rootView.moreContent.endLoadingMore(true, hasContent: true, loadedContentSize: limit, error: nil)
+                self.rootView.contentPresenter.endLoadingMore(limit, error: nil)
             }
         }
     }

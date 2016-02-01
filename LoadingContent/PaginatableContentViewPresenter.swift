@@ -12,16 +12,16 @@ protocol PaginatableContentViewPresenterType: class, ContentLoadingStatefull {
     
     var scrollableContentViewContainer: ContentViewType { get }
     
-    var loadingMoreProgressView: LoadingProgressView { get }
-    var loadingMoreProgressViewContainer: AnyView { get }
+    var paginationProgressView: LoadingProgressView { get set }
+    var paginationProgressViewContainer: UIView { get set }
     
     func beginLoadingIfNeeded(@noescape loading: ()->()) -> Bool
-    func endLoading(hasContent: Bool, contentSize: Int, error: ErrorType?)
+    func endLoading(loadedContentSize: Int, error: ErrorType?)
     
     func beginLoadingMoreIfNeeded(loading: (offset: Int, limit: Int)->()) -> Bool
-    func endLoadingMore(hasMoreContent: Bool, hasContent: Bool, loadedContentSize: Int, error: ErrorType?)
+    func endLoadingMore(loadedContentSize: Int, error: ErrorType?)
     
-    func reloadData()
+    func updateContent()
     
     func shouldLoadMoreContent() -> Bool
     
@@ -36,8 +36,7 @@ struct Pagination {
     let limit: Int
 }
 
-extension PaginatableContentViewPresenterType
-{
+extension PaginatableContentViewPresenterType {
 
     //TODO: have a dedicated state machine that handles loading more state
     var stateMachine: StateMachine<ContentLoadingState> {
@@ -88,16 +87,16 @@ extension PaginatableContentViewPresenterType
             self.stateDidChange($0.from, to: $0.to)
         }
         
-        loadingMoreProgressViewContainer.view.disappear()
+        paginationProgressViewContainer.view.disappear()
     }
     
     func beginLoadingIfNeeded(@noescape loading: ()->()) -> Bool {
         return self.scrollableContentViewContainer.beginLoadingIfNeeded(loading)
     }
     
-    func endLoading(hasContent: Bool, contentSize: Int, error: ErrorType?) {
-        updatePagination(hasContent, itemsCount: contentSize)
-        scrollableContentViewContainer.endLoading(hasContent, error: error)
+    func endLoading(loadedContentSize: Int, error: ErrorType?) {
+        pagination.offset += loadedContentSize
+        self.scrollableContentViewContainer.endLoading(loadedContentSize > 0, error: error)
     }
     
     func beginLoadingMoreIfNeeded(loading: (offset: Int, limit: Int)->()) -> Bool {
@@ -108,40 +107,33 @@ extension PaginatableContentViewPresenterType
                 loading(offset: pagination.offset, limit: pagination.limit)
                 return true
             }
-        } catch {
-            print(error)
-        }
+        } catch { print(error) }
         return false
     }
     
-    func endLoadingMore(hasMoreContent: Bool, hasContent: Bool, loadedContentSize: Int, error: ErrorType?) {
+    func endLoadingMore(loadedContentSize: Int, error: ErrorType?) {
         do {
-            updatePagination(hasMoreContent, itemsCount: loadedContentSize)
-            try stateMachine.tryState(error.map({ .Failed($0) }) ?? (hasContent ? .LoadedMore : .NoContent) /* content.map({ _ in .LoadedMore }) ?? .NoContent*/)
-            reloadData()
+            pagination.offset += loadedContentSize
+            let nextState: ContentLoadingState = error != nil ? .Failed(error!) : loadedContentSize > 0 ? .LoadedMore : .NoContent
+            try stateMachine.tryState(nextState)
+            updateContent()
         }
         catch { print(error) }
     }
     
-    private func updatePagination(loadedContent: Bool, itemsCount: Int) {
-        if loadedContent {
-            pagination.offset += itemsCount
-        }
-    }
-    
     func didEnterLoadingMoreState() {
-        loadingMoreProgressView.startAnimating()
-        loadingMoreProgressViewContainer.view.appear(animated: true)
+        paginationProgressView.startAnimating()
+        paginationProgressViewContainer.view.appear(animated: true)
     }
     
     func didExitLoadingMoreState() {
-        loadingMoreProgressViewContainer.view.disappear(animated: true) {
-            self.loadingMoreProgressView.stopAnimating()
+        paginationProgressViewContainer.view.disappear(animated: true) {
+            self.paginationProgressView.stopAnimating()
         }
     }
     
-    func reloadData() {
-        scrollableContentViewContainer.reloadData()
+    func updateContent() {
+        scrollableContentViewContainer.updateContent()
     }
   
     func shouldLoadMoreContent() -> Bool {
@@ -149,7 +141,7 @@ extension PaginatableContentViewPresenterType
         let contentViewHeight = scrollableContentViewContainer.scrollableContentView.bounds.size.height
         
         let contentHeight = scrollableContentViewContainer.scrollableContentView.contentSize.height
-        let loadingMoreProgressViewContainerHeight = CGRectGetHeight(loadingMoreProgressViewContainer.view.bounds)
+        let loadingMoreProgressViewContainerHeight = CGRectGetHeight(paginationProgressViewContainer.view.bounds)
         
         return contentOffset > max(0, contentHeight - contentViewHeight) + loadingMoreProgressViewContainerHeight
     }
@@ -167,10 +159,10 @@ extension PaginatableContentViewPresenterType where
 {
     
     func didEnterLoadingMoreState() {
-        scrollableContentViewContainer.scrollableContentView.tableFooterView = loadingMoreProgressViewContainer.view
+        scrollableContentViewContainer.scrollableContentView.tableFooterView = paginationProgressViewContainer.view
         
-        loadingMoreProgressView.startAnimating()
-        loadingMoreProgressViewContainer.view.appear(animated: true)
+        paginationProgressView.startAnimating()
+        paginationProgressViewContainer.view.appear(animated: true)
     }
     
     func didExitLoadingMoreState() {
@@ -183,7 +175,7 @@ extension PaginatableContentViewPresenterType where
             
             var offset = scrollableContentViewContainer.scrollableContentView.contentOffset
             if offset.y > 0 {
-                offset.y += CGRectGetHeight(loadingMoreProgressViewContainer.view.bounds)
+                offset.y += CGRectGetHeight(paginationProgressViewContainer.view.bounds)
                 self.scrollableContentViewContainer.scrollableContentView.contentOffset = offset
             }
             
@@ -192,7 +184,7 @@ extension PaginatableContentViewPresenterType where
             let offset = scrollableContentViewContainer.scrollableContentView.contentOffset
             if offset.y > 0 && offset.y > scrollableContentViewContainer.scrollableContentView.contentSize.height {
                 var newOffset = offset
-                newOffset.y += CGRectGetHeight(loadingMoreProgressViewContainer.view.bounds)
+                newOffset.y += CGRectGetHeight(paginationProgressViewContainer.view.bounds)
                 
                 self.scrollableContentViewContainer.scrollableContentView.contentOffset = newOffset
                 self.scrollableContentViewContainer.scrollableContentView.setContentOffset(offset, animated: true)
@@ -201,8 +193,8 @@ extension PaginatableContentViewPresenterType where
         default: break;
         }
         
-        loadingMoreProgressViewContainer.view.disappear(animated: false) {
-            self.loadingMoreProgressView.stopAnimating()
+        paginationProgressViewContainer.view.disappear(animated: false) {
+            self.paginationProgressView.stopAnimating()
         }
     }
     
@@ -214,10 +206,20 @@ class PaginatableContentTableViewPresenter: PaginatableContentViewPresenterType 
         return content
     }
     
-    var loadingMoreProgressViewContainer: AnyView
-    var loadingMoreProgressView: LoadingProgressView
+    var paginationProgressViewContainer: UIView {
+        didSet {
+            paginationProgressViewContainer.alpha = oldValue.alpha
+        }
+    }
     
-    var content: LoadableContentTableViewPresenter
+    var paginationProgressView: LoadingProgressView {
+        didSet {
+            paginationProgressView.view.alpha = oldValue.view.alpha
+        }
+    }
+    
+    let content: LoadableContentTableViewPresenter
+    
     var pagination: Pagination
     
     weak var delegate: ContentLoadingStateTransitionDelegate? {
@@ -226,10 +228,10 @@ class PaginatableContentTableViewPresenter: PaginatableContentViewPresenterType 
         }
     }
 
-    init(content: LoadableContentTableViewPresenter, loadingMoreProgressViewContainer: UIView, loadingMoreProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
+    init(content: LoadableContentTableViewPresenter, paginationProgressViewContainer: UIView, paginationProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
         self.content = content
-        self.loadingMoreProgressViewContainer = loadingMoreProgressViewContainer
-        self.loadingMoreProgressView = loadingMoreProgressView
+        self.paginationProgressViewContainer = paginationProgressViewContainer
+        self.paginationProgressView = paginationProgressView
         self.pagination = Pagination(offset: offset, limit: limit)
     }
     
@@ -257,18 +259,18 @@ extension PaginatableContentViewPresenterType where
         //to fix footer frame with added activity indicator
         if let
             frame = layout.layoutAttributesForSupplementaryViewOfKind(kind, atIndexPath: indexPath)?.frame,
-            superview = loadingMoreProgressViewContainer.view.superview {
+            superview = paginationProgressViewContainer.view.superview {
                 
                 superview.frame = frame
-                loadingMoreProgressViewContainer.view.frame = superview.bounds
+                paginationProgressViewContainer.view.frame = superview.bounds
         }
         
         stateMachine.pause()
         invalidateCollectionView(scrollableContentViewContainer.scrollableContentView)
         stateMachine.resume()
         
-        loadingMoreProgressView.startAnimating()
-        loadingMoreProgressViewContainer.view.appear(animated: true)
+        paginationProgressView.startAnimating()
+        paginationProgressViewContainer.view.appear(animated: true)
     }
     
     func didExitLoadingMoreState() {
@@ -276,8 +278,8 @@ extension PaginatableContentViewPresenterType where
         invalidateCollectionView(scrollableContentViewContainer.scrollableContentView)
         stateMachine.resume()
 
-        loadingMoreProgressViewContainer.view.disappear(animated: false) {
-            self.loadingMoreProgressView.stopAnimating()
+        paginationProgressViewContainer.view.disappear(animated: false) {
+            self.paginationProgressView.stopAnimating()
         }
     }
     
@@ -304,10 +306,20 @@ class PaginatableContentCollectionViewPresenter: PaginatableContentViewPresenter
         return content
     }
     
-    var loadingMoreProgressViewContainer: AnyView
-    var loadingMoreProgressView: LoadingProgressView
+    var paginationProgressViewContainer: UIView {
+        didSet {
+            paginationProgressViewContainer.alpha = oldValue.alpha
+        }
+    }
     
-    var content: LoadableContentCollectionViewPresenter
+    var paginationProgressView: LoadingProgressView {
+        didSet {
+            paginationProgressView.view.alpha = oldValue.view.alpha
+        }
+    }
+    
+    let content: LoadableContentCollectionViewPresenter
+    
     var pagination: Pagination
     
     weak var delegate: ContentLoadingStateTransitionDelegate? {
@@ -316,10 +328,10 @@ class PaginatableContentCollectionViewPresenter: PaginatableContentViewPresenter
         }
     }
     
-    init(content: LoadableContentCollectionViewPresenter, loadingMoreProgressViewContainer: UIView, loadingMoreProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
+    init(content: LoadableContentCollectionViewPresenter, paginationProgressViewContainer: UIView, paginationProgressView: LoadingProgressView, offset: Int = 0, limit: Int = 25) {
         self.content = content
-        self.loadingMoreProgressViewContainer = loadingMoreProgressViewContainer
-        self.loadingMoreProgressView = loadingMoreProgressView
+        self.paginationProgressViewContainer = paginationProgressViewContainer
+        self.paginationProgressView = paginationProgressView
         self.pagination = Pagination(offset: offset, limit: limit)
     }
     
@@ -332,34 +344,38 @@ extension LoadableContentCollectionViewPresenter: ScrollableContentViewContainer
 }
 
 //Layout to be used by collection views with load more function. CollectionView should have footers.
-class LoadMoreCollectionViewFlowLayout: UICollectionViewFlowLayout {
+class PaginatedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     @IBInspectable
-    var loadingMoreProgressViewContainerHeight: CGFloat = 0
+    var paginationProgressViewContainerHeight: CGFloat = 0
     
-    static let loadMoreFooterReuseIdentifier = "LoadMoreFooter"
+    static let paginationFooterReuseIdentifier = "PaginationFooter"
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func prepareLayout() {
-        collectionView?.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: LoadMoreCollectionViewFlowLayout.loadMoreFooterReuseIdentifier)
+        collectionView?.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: PaginatedCollectionViewFlowLayout.paginationFooterReuseIdentifier)
         
         super.prepareLayout()
     }
     
     override func layoutAttributesForSupplementaryViewOfKind(elementKind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let attr = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath)
+        var attr = super.layoutAttributesForSupplementaryViewOfKind(elementKind, atIndexPath: indexPath)
         
         //add loading indicator container height to footer in last section
-        if let attr = attr {
+        if attr != nil {
             if let
                 lastSection = collectionView?.numberOfSections()
                 where indexPath.section == lastSection - 1 && elementKind == UICollectionElementKindSectionFooter {
-                    attr.frame = CGRect(origin: attr.frame.origin, size: CGSize(width: attr.frame.size.width, height: attr.frame.size.height + loadingMoreProgressViewContainerHeight))
+                    attr!.frame = CGRect(origin: attr!.frame.origin, size: CGSize(width: attr!.frame.size.width, height: attr!.frame.size.height + paginationProgressViewContainerHeight))
             }
         }
         else if let collectionView = collectionView {
-            let attr = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withIndexPath: indexPath)
-            attr.frame = CGRect(origin: CGPointZero, size: CGSize(width: collectionView.bounds.size.width, height: loadingMoreProgressViewContainerHeight))
-            attr.zIndex = 10
+            attr = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withIndexPath: indexPath)
+            attr!.frame = CGRect(origin: CGPointZero, size: CGSize(width: collectionView.bounds.size.width, height: paginationProgressViewContainerHeight))
+            attr!.zIndex = 10
             return attr
         }
         
@@ -368,7 +384,7 @@ class LoadMoreCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     override func collectionViewContentSize() -> CGSize {
         var size = super.collectionViewContentSize()
-        size.height += loadingMoreProgressViewContainerHeight
+        size.height += paginationProgressViewContainerHeight
         return size
     }
     

@@ -76,7 +76,7 @@ class CollectionViewController: UIViewController {
                 if case .Loading = self.rootView.moreContent.currentState {
                     self.loadedContent = [(0..<pageSize).reduce([Int](), combine: { $0.0 + [$0.1] })]
                 }
-                self.rootView.moreContent.endLoading(true, contentSize: pageSize, error: nil)
+                self.rootView.moreContent.endLoading(pageSize, error: nil)
             }
         }
     }
@@ -103,7 +103,7 @@ extension CollectionViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionFooter {
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: LoadMoreCollectionViewFlowLayout.loadMoreFooterReuseIdentifier, forIndexPath: indexPath)
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: PaginatedCollectionViewFlowLayout.paginationFooterReuseIdentifier, forIndexPath: indexPath)
             //we want loading more progress view container to be placed in last section footer
             if indexPath.section == numberOfSectionsInCollectionView(collectionView) - 1 {
                 view.addSubview(rootView.loadingMoreProgressViewContainer)
@@ -120,7 +120,7 @@ extension CollectionViewController: UICollectionViewDataSource, UICollectionView
                 let newContent = /*[[Int]]() // */ [(offset..<limit+offset).reduce([Int](), combine: { $0.0 + [$0.1] })]
                 self.loadedContent += newContent
                 
-                self.rootView.moreContent.endLoadingMore(true, hasContent: true, loadedContentSize: limit, error: nil)
+                self.rootView.moreContent.endLoadingMore(limit, error: nil)
             }
         }
     }

@@ -32,10 +32,11 @@ enum ContentLoadingState: State {
         case (.Refreshing, .Loaded):
             return .Continue
             
-        case (.Refreshing, .NoContent), (.Refreshing, .Failed):
-            return .Redirect(.Loaded)
-            
-        case (.LoadingMore, .LoadedMore), (.LoadingMore, .NoContent), (.LoadingMore, .Failed):
+        case (.Refreshing, .NoContent), (.Refreshing, .Failed),
+            (.LoadingMore, .LoadedMore), (.LoadingMore, .NoContent), (.LoadingMore, .Failed):
+            //if we entered LoadingMore/Refreshing state then it automatically means that there is already some content
+            //becase transition to LoadingMore/Refreshing enabled only from Loaded state
+            //so we can just redirect back to Loaded state
             return .Redirect(.Loaded)
             
         case (.NoContent, .LoadingMore), (.Failed, .LoadingMore), (.Refreshing, .LoadingMore):
@@ -43,9 +44,11 @@ enum ContentLoadingState: State {
             
         default:
             if case toState = self {
+                //silently fail when transitioning to current state
                 return .Abort(nil)
             }
             else {
+                //disable all other kinds of transitions
                 return .Abort(StateError.InvalidStateTransition(self, toState))
             }
         }
