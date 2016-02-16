@@ -54,11 +54,7 @@ extension PaginatableContentViewPresenterType {
 
             //we want to handle only loading more state here
             switch ($0.from, $0.to) {
-            case
-                (.LoadingMore, _),
-                (.LoadedMore, _),
-                (_, .LoadingMore),
-                (_, .LoadedMore):
+            case (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
                 break
             default:
                 return
@@ -200,7 +196,7 @@ extension PaginatableContentViewPresenterType where
     
 }
 
-class PaginatableContentTableViewPresenter: PaginatableContentViewPresenterType {
+class PaginatableContentTableViewPresenter: PaginatableContentViewPresenterType, ContentLoadingStateTransitionDelegate {
     
     var scrollableContentViewContainer: LoadableContentTableViewPresenter {
         return content
@@ -224,7 +220,7 @@ class PaginatableContentTableViewPresenter: PaginatableContentViewPresenterType 
     
     weak var delegate: ContentLoadingStateTransitionDelegate? {
         didSet {
-            content.delegate = delegate
+            content.delegate = self
         }
     }
 
@@ -233,6 +229,25 @@ class PaginatableContentTableViewPresenter: PaginatableContentViewPresenterType 
         self.paginationProgressViewContainer = paginationProgressViewContainer
         self.paginationProgressView = paginationProgressView
         self.pagination = Pagination(offset: offset, limit: limit)
+    }
+    
+    func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
+        switch (from, to) {
+        case
+        (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
+            return false
+        default:
+            return self.delegate?.stateWillChange(from, to: to) ?? true
+        }
+    }
+    
+    func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
+        switch (from, to) {
+        case (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
+            return
+        default:
+            self.delegate?.stateDidChange(from, to: to)
+        }
     }
     
 }
@@ -300,7 +315,7 @@ private func invalidationContextToUpdateLoadingMoreSupplementaryView(collectionV
     return context
 }
 
-class PaginatableContentCollectionViewPresenter: PaginatableContentViewPresenterType {
+class PaginatableContentCollectionViewPresenter: PaginatableContentViewPresenterType, ContentLoadingStateTransitionDelegate {
     
     var scrollableContentViewContainer: LoadableContentCollectionViewPresenter {
         return content
@@ -324,7 +339,7 @@ class PaginatableContentCollectionViewPresenter: PaginatableContentViewPresenter
     
     weak var delegate: ContentLoadingStateTransitionDelegate? {
         didSet {
-            content.delegate = delegate
+            content.delegate = self
         }
     }
     
@@ -333,6 +348,25 @@ class PaginatableContentCollectionViewPresenter: PaginatableContentViewPresenter
         self.paginationProgressViewContainer = paginationProgressViewContainer
         self.paginationProgressView = paginationProgressView
         self.pagination = Pagination(offset: offset, limit: limit)
+    }
+    
+    func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
+        switch (from, to) {
+        case
+        (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
+            return false
+        default:
+            return self.delegate?.stateWillChange(from, to: to) ?? true
+        }
+    }
+    
+    func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
+        switch (from, to) {
+        case (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
+            return
+        default:
+            self.delegate?.stateDidChange(from, to: to)
+        }
     }
     
 }

@@ -64,18 +64,6 @@ extension LoadableContentViewPresenterType {
     func setupInitialState() {
         stateMachine.addTransitionObserver { [unowned self] in
             
-            //we do not want to hande loading more state here
-            switch ($0.from, $0.to) {
-            case
-            (.LoadingMore, _),
-            (.LoadedMore, _),
-            (_, .LoadingMore),
-            (_, .LoadedMore):
-                return
-            default:
-                break
-            }
-            
             var shouldProceed = true
             if let delegate = self.delegate where !delegate.stateWillChange($0.from, to: $0.to) {
                 shouldProceed = false
