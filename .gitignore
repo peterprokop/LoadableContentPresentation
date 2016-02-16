@@ -29,4 +29,4 @@ HelloFresh/DerivedData/
 #
 # Pods/
 
-**/Carthage/Build
+**/Carthage

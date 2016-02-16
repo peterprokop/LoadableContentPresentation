@@ -13,8 +13,8 @@ class StringContentView: UIView {
         return view
     }()
     
-    lazy var errorView: MyErrorView = {
-        let view = MyErrorView(frame: self.bounds)
+    lazy var errorView: UIView = {
+        let view = UIView(frame: self.bounds)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         view.backgroundColor = UIColor.redColor()
         self.addSubview(view)

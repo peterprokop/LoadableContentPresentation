@@ -12,8 +12,8 @@ class IntsPaginatableCollectionView: UIView {
         return view
     }()
     
-    lazy var errorView: MyErrorView = {
-        let view = MyErrorView(frame: self.bounds)
+    lazy var errorView: UIView = {
+        let view = UIView(frame: self.bounds)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         view.backgroundColor = UIColor.redColor()
         self.addSubview(view)
@@ -46,7 +46,7 @@ class IntsPaginatableCollectionView: UIView {
 
     lazy var moreContent: PaginatableContentCollectionViewPresenter = {
         let content = LoadableContentCollectionViewPresenter(collectionView: self.collectionView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
-        return PaginatableContentCollectionViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+        return PaginatableContentCollectionViewPresenter(content: content, paginationProgressViewContainer: self.loadingMoreProgressViewContainer, paginationProgressView: self.loadingMoreProgressView, limit: 5)
     }()
 
 }

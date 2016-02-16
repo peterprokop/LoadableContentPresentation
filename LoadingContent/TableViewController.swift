@@ -1,8 +1,5 @@
 import UIKit
-
-class MyErrorView: UIView, ErrorView {
-    var error: ErrorType?
-}
+import DZNEmptyDataSet
 
 class IntsPaginatableTableView: UIView {
     
@@ -16,8 +13,8 @@ class IntsPaginatableTableView: UIView {
         return view
     }()
     
-    lazy var errorView: MyErrorView = {
-        let view = MyErrorView(frame: self.bounds)
+    lazy var errorView: UIView = {
+        let view = UIView(frame: self.bounds)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         view.backgroundColor = UIColor.redColor()
         self.addSubview(view)
@@ -49,8 +46,8 @@ class IntsPaginatableTableView: UIView {
     }()
 
     lazy var contentPresenter: PaginatableContentTableViewPresenter = {
-        let content = LoadableContentTableViewPresenter(tableView: self.tableView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
-        return PaginatableContentTableViewPresenter(content: content, loadingMoreProgressViewContainer: self.loadingMoreProgressViewContainer, loadingMoreProgressView: self.loadingMoreProgressView, limit: 5)
+        let content = LoadableContentTableViewPresenter(tableView: self.tableView, noContentView: self.tableView!.noContentView /*self.noContentView*/, errorView: /*self.errorView*/ self.tableView!.errorView, loadingProgressView: self.loadingProgressView)
+        return PaginatableContentTableViewPresenter(content: content, paginationProgressViewContainer: self.loadingMoreProgressViewContainer, paginationProgressView: self.loadingMoreProgressView, limit: 5)
     }()
     
 }
@@ -65,7 +62,10 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.whiteColor()
-        
+
+        rootView.tableView.emptyDataSetSource = self
+        rootView.tableView.emptyDataSetDelegate = self
+
         rootView.contentPresenter.setupInitialState()
         rootView.contentPresenter.delegate = self
     }
@@ -73,19 +73,23 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        loadData()
+    }
+    
+    func loadData() {
         let limit = rootView.contentPresenter.pagination.limit
         let pageSize = limit*5
         
         rootView.contentPresenter.beginLoadingIfNeeded {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC) * 1), dispatch_get_main_queue()) {
-                if self.loadedContent.isEmpty {
-                    self.loadedContent = [(0..<pageSize).reduce([Int](), combine: { $0.0 + [$0.1] })]
-                    self.rootView.contentPresenter.endLoading(pageSize, error: nil)
-                }
-                else {
-                    //simulate error when there was content previously
-                    self.rootView.contentPresenter.endLoading(0, error: NSError(domain: "", code: 0, userInfo: nil))
-                }
+//                if self.loadedContent.isEmpty {
+//                    self.loadedContent = [(0..<pageSize).reduce([Int](), combine: { $0.0 + [$0.1] })]
+//                    self.rootView.contentPresenter.endLoading(pageSize, error: nil)
+//                }
+//                else {
+                //simulate error when there was content previously
+                self.rootView.contentPresenter.endLoading(0, error: NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "error desc"]))
+//                }
             }
         }
     }
@@ -94,7 +98,21 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
 
     func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
         print("will transition from \(from) to \(to)")
-        return true
+        switch to {
+        case .Failed:
+            rootView.contentPresenter.content.loadingProgressView.view.disappear(animated: true)
+            rootView.contentPresenter.content.contentView.view.appear(animated: true)
+            rootView.contentPresenter.content.errorView.view.appear(animated: true)
+            return false
+        case .NoContent:
+            rootView.contentPresenter.content.loadingProgressView.view.disappear(animated: true)
+            rootView.contentPresenter.content.contentView.view.appear(animated: true)
+            rootView.contentPresenter.content.noContentView.view.appear(animated: true)
+            return false
+        default:
+            return true
+        }
+//        return true
     }
 
     func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
@@ -134,5 +152,37 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return String(section)
     }
+}
+
+extension TableViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+
+    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+        switch self.rootView.contentPresenter.currentState {
+        case .NoContent, .Failed: return true
+        default: return false
+        }
+    }
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        if let errorString = (scrollView.errorView.error as? NSError)?.localizedDescription {
+            return NSAttributedString(string: errorString)
+        }
+        return NSAttributedString(string: "No content")
+    }
+    
+    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+        return NSAttributedString(string: "Reload")
+    }
+    
+    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+        //this method recreates views
+        scrollView.reloadEmptyDataSet()
+        //need to update content presenter reference
+        rootView.contentPresenter.content.errorView = scrollView.errorView
+        rootView.contentPresenter.content.noContentView = scrollView.noContentView
+        
+        loadData()
+    }
+
 }
 
