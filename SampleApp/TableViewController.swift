@@ -1,4 +1,5 @@
 import UIKit
+import LoadingContent
 import DZNEmptyDataSet
 
 class IntsPaginatableTableView: UIView {
@@ -66,7 +67,6 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
         rootView.tableView.emptyDataSetSource = self
         rootView.tableView.emptyDataSetDelegate = self
 
-        rootView.contentPresenter.setupInitialState()
         rootView.contentPresenter.delegate = self
     }
     
@@ -100,14 +100,14 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
         print("will transition from \(from) to \(to)")
         switch to {
         case .Failed:
-            rootView.contentPresenter.content.loadingProgressView.view.disappear(animated: true)
-            rootView.contentPresenter.content.contentView.view.appear(animated: true)
-            rootView.contentPresenter.content.errorView.view.appear(animated: true)
+            rootView.contentPresenter.loadingProgressView.disappear(animated: true)
+            rootView.contentPresenter.contentView.appear(animated: true)
+            rootView.contentPresenter.errorView.appear(animated: true)
             return false
         case .NoContent:
-            rootView.contentPresenter.content.loadingProgressView.view.disappear(animated: true)
-            rootView.contentPresenter.content.contentView.view.appear(animated: true)
-            rootView.contentPresenter.content.noContentView.view.appear(animated: true)
+            rootView.contentPresenter.loadingProgressView.disappear(animated: true)
+            rootView.contentPresenter.contentView.appear(animated: true)
+            rootView.contentPresenter.noContentView.appear(animated: true)
             return false
         default:
             return true
@@ -177,9 +177,10 @@ extension TableViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
         //this method recreates views
         scrollView.reloadEmptyDataSet()
+        
         //need to update content presenter reference
-        rootView.contentPresenter.content.errorView = scrollView.errorView
-        rootView.contentPresenter.content.noContentView = scrollView.noContentView
+        rootView.contentPresenter.errorView = scrollView.errorView
+        rootView.contentPresenter.noContentView = scrollView.noContentView
         
         loadData()
     }

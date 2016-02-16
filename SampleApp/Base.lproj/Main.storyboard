@@ -9,12 +9,12 @@
         <!--Item-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="TableViewController" customModule="LoadingContent" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="TableViewController" customModule="SampleApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="IntsPaginatableTableView" customModule="LoadingContent" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="IntsPaginatableTableView" customModule="SampleApp" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -71,12 +71,12 @@
         <!--Item-->
         <scene sceneID="p69-kS-si0">
             <objects>
-                <viewController id="k5b-st-vGz" customClass="ScrollViewController" customModule="LoadingContent" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="k5b-st-vGz" customClass="ScrollViewController" customModule="SampleApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2Qe-Wt-ALs"/>
                         <viewControllerLayoutGuide type="bottom" id="com-Ht-H7p"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="nFT-3h-xCM" customClass="StringContentView" customModule="LoadingContent" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="nFT-3h-xCM" customClass="StringContentView" customModule="SampleApp" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -120,19 +120,19 @@
         <!--Item-->
         <scene sceneID="Vxj-DQ-e8X">
             <objects>
-                <viewController id="BJi-Zm-9df" customClass="CollectionViewController" customModule="LoadingContent" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BJi-Zm-9df" customClass="CollectionViewController" customModule="SampleApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Tmo-jo-6JK"/>
                         <viewControllerLayoutGuide type="bottom" id="mKW-Lz-M6d"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="EiL-Qz-5bj" customClass="IntsPaginatableCollectionView" customModule="LoadingContent" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="EiL-Qz-5bj" customClass="IntsPaginatableCollectionView" customModule="SampleApp" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qbf-sn-H3D">
                                 <rect key="frame" x="20" y="20" width="560" height="531"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fyn-HD-zx9" customClass="PaginatedCollectionViewFlowLayout" customModule="LoadingContent" customModuleProvider="target">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fyn-HD-zx9" customClass="PaginatedCollectionViewFlowLayout" customModule="LoadingContent">
                                     <size key="itemSize" width="100" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="50" height="10"/>

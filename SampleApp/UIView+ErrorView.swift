@@ -1,4 +1,6 @@
-let NSErrorAssiciatedKey = UnsafeMutablePointer<Int8>.alloc(1)
+import LoadingContent
+
+private let NSErrorAssiciatedKey = UnsafeMutablePointer<Int8>.alloc(1)
 
 class Box<T> {
     let unbox: T
@@ -9,7 +11,7 @@ class Box<T> {
 
 extension UIView: ErrorView {
     
-    var error: ErrorType? {
+    public var error: ErrorType? {
         get {
             return boxedError?.unbox
         }

@@ -1,4 +1,5 @@
 import UIKit
+import LoadingContent
 
 class IntsPaginatableCollectionView: UIView {
     
@@ -61,8 +62,6 @@ class CollectionViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.whiteColor()
-        
-        rootView.moreContent.setupInitialState()
     }
     
     override func viewWillAppear(animated: Bool) {

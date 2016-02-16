@@ -1,4 +1,5 @@
 import UIKit
+import LoadingContent
 
 class StringContentView: UIView {
     
@@ -46,8 +47,6 @@ class ScrollViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        rootView.content.setupInitialState()
     }
 
     override func viewWillAppear(animated: Bool) {

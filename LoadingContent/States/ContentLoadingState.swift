@@ -1,6 +1,6 @@
 import Foundation
 
-enum ContentLoadingState: State {
+public enum ContentLoadingState: State {
     
     case Initial
     case Loading
@@ -11,7 +11,7 @@ enum ContentLoadingState: State {
     case NoContent
     case Failed(ErrorType)
     
-    func shouldTransition(toState: ContentLoadingState) -> Should<ContentLoadingState> {
+    public func shouldTransition(toState: ContentLoadingState) -> Should<ContentLoadingState> {
         switch (self, toState) {
             
         case (.Initial, .Loading):
@@ -55,7 +55,7 @@ enum ContentLoadingState: State {
     }
 }
 
-func ~=(lhs: ContentLoadingState, rhs: ContentLoadingState) -> Bool {
+public func ~=(lhs: ContentLoadingState, rhs: ContentLoadingState) -> Bool {
     switch (lhs, rhs) {
     case (.Initial, .Initial),
     (.Loading, .Loading),
@@ -71,7 +71,7 @@ func ~=(lhs: ContentLoadingState, rhs: ContentLoadingState) -> Bool {
     }
 }
 
-protocol ContentLoadingStateTransitionDelegate: class {
+public protocol ContentLoadingStateTransitionDelegate: class {
     ///If returns true then view will peroperm it's default behaviour for this state transition. Default implementation returns true.
     func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool
 
@@ -84,7 +84,7 @@ extension ContentLoadingStateTransitionDelegate {
     }
 }
 
-protocol ContentLoadingStatefull: Statefull {
+public protocol ContentLoadingStatefull: Statefull {
     var stateMachine: StateMachine<ContentLoadingState> { get }
     func stateDidChange(from: ContentLoadingState, to: ContentLoadingState)
     
