@@ -150,16 +150,7 @@ extension PaginatableContentViewPresenterType {
         delegate?.stateDidChange(from, to: to)
     }
     
-    public var errorView: ErrorView {
-        get {
-            return contentViewPresenter.errorView
-        }
-        set {
-            contentViewPresenter.errorView = newValue
-        }
-    }
-    
-    public var noContentView: UIView {
+    public var noContentView: NoContentView {
         get {
             return contentViewPresenter.noContentView
         }

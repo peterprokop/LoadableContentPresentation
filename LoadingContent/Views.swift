@@ -32,7 +32,7 @@ public protocol LoadingProgressView: AnyView, AnimatedAppearance {
     func stopAnimating()
 }
 
-public protocol ErrorView: AnyView, AnimatedAppearance {
+public protocol NoContentView: AnyView, AnimatedAppearance {
     var error: ErrorType? { get set }
 }
 

@@ -14,14 +14,6 @@
 @property (nonatomic, readonly) DZNEmptyDataSetView *emptyDataSetView;
 @end
 
-@implementation UIScrollView(ErrorView)
-
-- (UIView *)errorView {
-    return (UIView *)[self emptyDataSetView];
-}
-
-@end
-
 @implementation UIScrollView(NoContentView)
 
 - (UIView *)noContentView {

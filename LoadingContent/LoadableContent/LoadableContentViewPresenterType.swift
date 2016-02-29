@@ -5,8 +5,7 @@ import UIKit
 public protocol LoadableContentViewPresenterType: class, ContentLoadingStatefull {
     
     var contentView: ContentView { get }
-    var noContentView: UIView { get set }
-    var errorView: ErrorView { get set }
+    var noContentView: NoContentView { get set }
     var loadingProgressView: LoadingProgressView { get set }
     
     ///Starts loading using block
@@ -69,7 +68,6 @@ extension LoadableContentViewPresenterType {
         
         contentView.view.disappear()
         noContentView.view.disappear()
-        errorView.view.disappear()
         loadingProgressView.view.disappear()
     }
     
@@ -94,7 +92,6 @@ extension LoadableContentViewPresenterType {
         do {
             let nextState: ContentLoadingState = error != nil ? .Failed(error!) : hasContent ? .Loaded : .NoContent
             try stateMachine.tryState(nextState)
-            errorView.error = error
             updateContent()
         }
         catch { print(error) }
@@ -124,11 +121,11 @@ extension LoadableContentViewPresenterType {
     }
     
     private func didEnterErrorState() {
-        errorView.appear(animated: true)
+        noContentView.appear(animated: true)
     }
     
     private func didExitErrorState() {
-        errorView.disappear(animated: true)
+        noContentView.disappear(animated: true)
     }
     
 }

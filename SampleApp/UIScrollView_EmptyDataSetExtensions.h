@@ -10,12 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIScrollView(ErrorView)
-
-@property (nonatomic, readonly) UIView *errorView;
-
-@end
-
 @interface UIScrollView(NoContentView)
 
 @property (nonatomic, readonly) UIView *noContentView;

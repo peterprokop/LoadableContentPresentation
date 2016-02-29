@@ -32,7 +32,7 @@ class StringContentView: UIView {
     }()
 
     lazy var content: LoadableContentViewPresenter = {
-        return LoadableContentViewPresenter(contentView: self.scrollView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
+        return LoadableContentViewPresenter(contentView: self.scrollView, noContentView: self.noContentView, loadingProgressView: self.loadingProgressView)
     }()
 }
 

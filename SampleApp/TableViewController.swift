@@ -6,22 +6,6 @@ class IntsPaginatableTableView: UIView {
     
     @IBOutlet weak var tableView: UITableView!
     
-    lazy var noContentView: UIView = {
-        let view = UIView(frame: self.bounds)
-        view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        view.backgroundColor = UIColor.grayColor()
-        self.addSubview(view)
-        return view
-    }()
-    
-    lazy var errorView: UIView = {
-        let view = UIView(frame: self.bounds)
-        view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        view.backgroundColor = UIColor.redColor()
-        self.addSubview(view)
-        return view
-    }()
-    
     lazy var loadingProgressView: LoadingProgressView = {
         let view = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         view.sizeToFit()
@@ -47,7 +31,7 @@ class IntsPaginatableTableView: UIView {
     }()
 
     lazy var contentPresenter: PaginatableContentTableViewPresenter = {
-        let content = LoadableContentTableViewPresenter(tableView: self.tableView, noContentView: self.tableView!.noContentView /*self.noContentView*/, errorView: /*self.errorView*/ self.tableView!.errorView, loadingProgressView: self.loadingProgressView)
+        let content = LoadableContentTableViewPresenter(tableView: self.tableView, noContentView: self.tableView!.noContentView, loadingProgressView: self.loadingProgressView)
         return PaginatableContentTableViewPresenter(content: content, paginationProgressViewContainer: self.loadingMoreProgressViewContainer, paginationProgressView: self.loadingMoreProgressView, limit: 5)
     }()
     
@@ -99,12 +83,7 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
     func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
         print("will transition from \(from) to \(to)")
         switch to {
-        case .Failed:
-            rootView.contentPresenter.loadingProgressView.disappear(animated: true)
-            rootView.contentPresenter.contentView.appear(animated: true)
-            rootView.contentPresenter.errorView.appear(animated: true)
-            return false
-        case .NoContent:
+        case .Failed, .NoContent:
             rootView.contentPresenter.loadingProgressView.disappear(animated: true)
             rootView.contentPresenter.contentView.appear(animated: true)
             rootView.contentPresenter.noContentView.appear(animated: true)
@@ -112,7 +91,6 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
         default:
             return true
         }
-//        return true
     }
 
     func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
@@ -164,7 +142,7 @@ extension TableViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        if let errorString = (scrollView.errorView.error as? NSError)?.localizedDescription {
+        if let errorString = (scrollView.noContentView.error as? NSError)?.localizedDescription {
             return NSAttributedString(string: errorString)
         }
         return NSAttributedString(string: "No content")
@@ -179,11 +157,12 @@ extension TableViewController: DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
         scrollView.reloadEmptyDataSet()
         
         //need to update content presenter reference
-        rootView.contentPresenter.errorView = scrollView.errorView
         rootView.contentPresenter.noContentView = scrollView.noContentView
         
         loadData()
     }
 
 }
+
+
 

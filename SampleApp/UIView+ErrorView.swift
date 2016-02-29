@@ -9,7 +9,7 @@ class Box<T> {
     }
 }
 
-extension UIView: ErrorView {
+extension UIView: NoContentView {
     
     public var error: ErrorType? {
         get {

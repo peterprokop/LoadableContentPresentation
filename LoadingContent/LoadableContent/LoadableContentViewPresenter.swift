@@ -9,17 +9,12 @@ public class LoadableContentViewPresenter: LoadableContentViewPresenterType {
     
     public let contentView: ContentView
     
-    public var noContentView: UIView {
+    public var noContentView: NoContentView {
         didSet {
-            noContentView.alpha = oldValue.alpha
+            noContentView.view.alpha = oldValue.view.alpha
         }
     }
     
-    public var errorView: ErrorView {
-        didSet {
-            errorView.view.alpha = oldValue.view.alpha
-        }
-    }
     public var loadingProgressView: LoadingProgressView {
         didSet {
             loadingProgressView.view.alpha = oldValue.view.alpha
@@ -30,10 +25,9 @@ public class LoadableContentViewPresenter: LoadableContentViewPresenterType {
     
     public var delegate: ContentLoadingStateTransitionDelegate?
     
-    public init(contentView: ContentView, noContentView: UIView, errorView: ErrorView, loadingProgressView: LoadingProgressView) {
+    public init(contentView: ContentView, noContentView: NoContentView, loadingProgressView: LoadingProgressView) {
         self.contentView = contentView
         self.noContentView = noContentView
-        self.errorView = errorView
         self.loadingProgressView = loadingProgressView
         
         setupInitialState()

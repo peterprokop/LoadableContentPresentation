@@ -46,7 +46,7 @@ class IntsPaginatableCollectionView: UIView {
     }()
 
     lazy var moreContent: PaginatableContentCollectionViewPresenter = {
-        let content = LoadableContentCollectionViewPresenter(collectionView: self.collectionView, noContentView: self.noContentView, errorView: self.errorView, loadingProgressView: self.loadingProgressView)
+        let content = LoadableContentCollectionViewPresenter(collectionView: self.collectionView, noContentView: self.noContentView, loadingProgressView: self.loadingProgressView)
         return PaginatableContentCollectionViewPresenter(content: content, paginationProgressViewContainer: self.loadingMoreProgressViewContainer, paginationProgressView: self.loadingMoreProgressView, limit: 5)
     }()
 
