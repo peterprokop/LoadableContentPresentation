@@ -20,6 +20,9 @@ public enum ContentLoadingState: State {
         case (.Loading, .Loaded), (.Loading, .NoContent), (.Loading, .Failed):
             return .Continue
         
+        case (.Loaded, .Loading):
+            return .Redirect(.Refreshing)
+
         case (.Loaded, .Refreshing), (.Loaded, .LoadingMore):
             return .Continue
             

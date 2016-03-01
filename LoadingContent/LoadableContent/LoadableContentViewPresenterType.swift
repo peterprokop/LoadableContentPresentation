@@ -72,9 +72,7 @@ extension LoadableContentViewPresenterType {
     }
     
     public func beginLoadingIfNeeded(@noescape loading: ()->()) -> Bool {
-        return
-            tryLoadingWithNewState(.Loading, loading: loading) ||
-            tryLoadingWithNewState(.Refreshing, loading: loading)
+        return tryLoadingWithNewState(.Loading, loading: loading)
     }
     
     private func tryLoadingWithNewState(state: ContentLoadingState, @noescape loading: ()->()) -> Bool {
