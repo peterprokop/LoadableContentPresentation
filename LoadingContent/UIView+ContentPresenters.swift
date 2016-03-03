@@ -1,6 +1,16 @@
-import UIKit
+//MARK: AnyView
 
-//MARK: Common protocols
+public protocol AnyView: class {
+    var view: UIView { get }
+}
+
+extension UIView: AnyView {
+    public var view: UIView {
+        return self
+    }
+}
+
+//MARK: - AnimatedAppearance
 
 public protocol AnimatedAppearance {
     func appear(animated animated: Bool, completion:()->())
@@ -16,31 +26,6 @@ extension AnimatedAppearance where Self: AnyView {
         self.view.disappear(animated: animated, completion: completion)
     }
 }
-
-public protocol AnyView: class {
-    var view: UIView { get }
-}
-
-extension UIView: AnyView {
-    public var view: UIView {
-        return self
-    }
-}
-
-public protocol LoadingProgressView: AnyView, AnimatedAppearance {
-    func startAnimating()
-    func stopAnimating()
-}
-
-public protocol NoContentView: AnyView, AnimatedAppearance {
-    var error: ErrorType? { get set }
-}
-
-public protocol ContentView: AnyView, AnimatedAppearance {
-    func updateContent()
-}
-
-extension UIActivityIndicatorView: LoadingProgressView { }
 
 extension UIView {
     public func appear(animated animated: Bool = false, completion:()->() = { }) {
@@ -67,3 +52,54 @@ extension UIView {
         }
     }
 }
+
+//MARK: - ContentView
+
+public protocol ContentView: AnyView, AnimatedAppearance {
+    func updateContent()
+}
+
+//MARK: - NoContentView
+
+public protocol NoContentView: AnyView, AnimatedAppearance {
+    var error: ErrorType? { get set }
+}
+
+private let NSErrorAssiciatedKey = UnsafeMutablePointer<Int8>.alloc(1)
+
+class Box<T> {
+    let unbox: T
+    init(value: T) {
+        self.unbox = value
+    }
+}
+
+extension UIView: NoContentView {
+    
+    public var error: ErrorType? {
+        get {
+            return boxedError?.unbox
+        }
+        set {
+            boxedError = newValue.map(Box<ErrorType>.init)
+        }
+    }
+    
+    private var boxedError: Box<ErrorType>? {
+        get {
+            return objc_getAssociatedObject(self, NSErrorAssiciatedKey) as? Box<ErrorType>
+        }
+        set {
+            objc_setAssociatedObject(self, NSErrorAssiciatedKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+}
+
+//MARK: - LoadingProgressView
+
+public protocol LoadingProgressView: AnyView, AnimatedAppearance {
+    func startAnimating()
+    func stopAnimating()
+}
+
+extension UIActivityIndicatorView: LoadingProgressView { }

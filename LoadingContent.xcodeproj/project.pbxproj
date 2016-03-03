@@ -19,7 +19,7 @@
 		64D7869A1C73493B00E7F816 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645DFE001C28411900857A68 /* StateMachine.swift */; };
 		64D786A41C7349DB00E7F816 /* LoadingContent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D7868B1C73491D00E7F816 /* LoadingContent.framework */; };
 		64D786AA1C7349EC00E7F816 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B863A81C2B66BD006FB2EF /* StateMachineTests.swift */; };
-		64D786B21C734A5F00E7F816 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786B11C734A5F00E7F816 /* Views.swift */; };
+		64D786B21C734A5F00E7F816 /* UIView+ContentPresenters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786B11C734A5F00E7F816 /* UIView+ContentPresenters.swift */; };
 		64D786B41C734AAA00E7F816 /* LoadableContentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786B31C734AAA00E7F816 /* LoadableContentViewPresenter.swift */; };
 		64D786B61C734ACD00E7F816 /* LoadableContentTableViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786B51C734ACD00E7F816 /* LoadableContentTableViewPresenter.swift */; };
 		64D786BA1C734B1000E7F816 /* LoadableContentCollectionViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786B91C734B1000E7F816 /* LoadableContentCollectionViewPresenter.swift */; };
@@ -32,7 +32,6 @@
 		64D786C81C734DC700E7F816 /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786711C73482D00E7F816 /* ScrollViewController.swift */; };
 		64D786C91C734DC700E7F816 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786721C73482D00E7F816 /* TableViewController.swift */; };
 		64D786CA1C734DC700E7F816 /* UIScrollView_EmptyDataSetExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D786741C73482D00E7F816 /* UIScrollView_EmptyDataSetExtensions.m */; };
-		64D786CB1C734DC700E7F816 /* UIView+ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D786751C73482D00E7F816 /* UIView+ErrorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,13 +100,12 @@
 		64D786721C73482D00E7F816 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		64D786731C73482D00E7F816 /* UIScrollView_EmptyDataSetExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScrollView_EmptyDataSetExtensions.h; sourceTree = "<group>"; };
 		64D786741C73482D00E7F816 /* UIScrollView_EmptyDataSetExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIScrollView_EmptyDataSetExtensions.m; sourceTree = "<group>"; };
-		64D786751C73482D00E7F816 /* UIView+ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ErrorView.swift"; sourceTree = "<group>"; };
 		64D7867D1C73484800E7F816 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		64D7867F1C73486400E7F816 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64D7868B1C73491D00E7F816 /* LoadingContent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoadingContent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D7868D1C73491D00E7F816 /* LoadingContent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingContent.h; sourceTree = "<group>"; };
 		64D7869F1C7349DB00E7F816 /* LoadingContentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoadingContentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		64D786B11C734A5F00E7F816 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		64D786B11C734A5F00E7F816 /* UIView+ContentPresenters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ContentPresenters.swift"; sourceTree = "<group>"; };
 		64D786B31C734AAA00E7F816 /* LoadableContentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadableContentViewPresenter.swift; sourceTree = "<group>"; };
 		64D786B51C734ACD00E7F816 /* LoadableContentTableViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadableContentTableViewPresenter.swift; sourceTree = "<group>"; };
 		64D786B91C734B1000E7F816 /* LoadableContentCollectionViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadableContentCollectionViewPresenter.swift; sourceTree = "<group>"; };
@@ -171,7 +169,7 @@
 				64D786C11C734C6700E7F816 /* States */,
 				64D7867F1C73486400E7F816 /* Info.plist */,
 				64D7868D1C73491D00E7F816 /* LoadingContent.h */,
-				64D786B11C734A5F00E7F816 /* Views.swift */,
+				64D786B11C734A5F00E7F816 /* UIView+ContentPresenters.swift */,
 			);
 			path = LoadingContent;
 			sourceTree = "<group>";
@@ -193,7 +191,6 @@
 				64D7866F1C73482D00E7F816 /* CollectionViewController.swift */,
 				64D786711C73482D00E7F816 /* ScrollViewController.swift */,
 				64D786721C73482D00E7F816 /* TableViewController.swift */,
-				64D786751C73482D00E7F816 /* UIView+ErrorView.swift */,
 				64D7866D1C73482C00E7F816 /* SampleApp-Bridging-Header.h */,
 				64D786731C73482D00E7F816 /* UIScrollView_EmptyDataSetExtensions.h */,
 				64D786741C73482D00E7F816 /* UIScrollView_EmptyDataSetExtensions.m */,
@@ -407,7 +404,6 @@
 				64D786C81C734DC700E7F816 /* ScrollViewController.swift in Sources */,
 				64D786C61C734DC700E7F816 /* AppDelegate.swift in Sources */,
 				64D786CA1C734DC700E7F816 /* UIScrollView_EmptyDataSetExtensions.m in Sources */,
-				64D786CB1C734DC700E7F816 /* UIView+ErrorView.swift in Sources */,
 				64D786C91C734DC700E7F816 /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,7 +418,7 @@
 				64D786BC1C734B3C00E7F816 /* PaginatableContentTableViewPresenter.swift in Sources */,
 				64D786981C73492B00E7F816 /* PaginatableContentViewPresenterType.swift in Sources */,
 				64D786971C73492B00E7F816 /* LoadableContentViewPresenterType.swift in Sources */,
-				64D786B21C734A5F00E7F816 /* Views.swift in Sources */,
+				64D786B21C734A5F00E7F816 /* UIView+ContentPresenters.swift in Sources */,
 				64D786BA1C734B1000E7F816 /* LoadableContentCollectionViewPresenter.swift in Sources */,
 				64D786B61C734ACD00E7F816 /* LoadableContentTableViewPresenter.swift in Sources */,
 				64D7869A1C73493B00E7F816 /* StateMachine.swift in Sources */,
