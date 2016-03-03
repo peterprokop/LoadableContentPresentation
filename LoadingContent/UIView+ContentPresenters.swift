@@ -1,3 +1,5 @@
+import UIKit
+
 //MARK: AnyView
 
 public protocol AnyView: class {

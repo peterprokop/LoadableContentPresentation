@@ -1,5 +1,5 @@
 import UIKit
-import LoadingContent
+import LoadableContentPresentation
 
 class IntsPaginatableCollectionView: UIView {
     

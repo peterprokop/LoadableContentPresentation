@@ -1,4 +1,4 @@
-//MARK: - Collection Views
+import UIKit
 
 extension UICollectionView {
     override public func updateContent() {

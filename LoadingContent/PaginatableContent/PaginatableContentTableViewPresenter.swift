@@ -1,4 +1,4 @@
-//MARK: - Table Views
+import UIKit
 
 extension LoadableContentTableViewPresenter: ScrollableContentViewContainerType {
     public var scrollableContentView: UITableView {

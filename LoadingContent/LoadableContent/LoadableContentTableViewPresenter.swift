@@ -1,4 +1,4 @@
-//MARK: - Table Views
+import UIKit
 
 extension UITableView {
     override public func updateContent() {

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:LoadingContent.xcodeproj">
+      location = "self:/Users/iilyapuchka/Documents/LoadingContent/LoadableContentPresentation.xcodeproj">
    </FileRef>
 </Workspace>

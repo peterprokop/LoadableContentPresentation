@@ -1,4 +1,4 @@
-//MARK: - Collection Views
+import UIKit
 
 extension LoadableContentCollectionViewPresenter: ScrollableContentViewContainerType {
     public var scrollableContentView: UICollectionView {

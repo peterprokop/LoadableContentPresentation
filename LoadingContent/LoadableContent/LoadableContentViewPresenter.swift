@@ -1,4 +1,4 @@
-//MARK: - Plain Views
+import UIKit
 
 extension UIView: ContentView {
     public func updateContent() {

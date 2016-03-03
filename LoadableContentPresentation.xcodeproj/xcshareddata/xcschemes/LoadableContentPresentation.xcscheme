@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "64D7868A1C73491D00E7F816"
-               BuildableName = "LoadingContent.framework"
-               BlueprintName = "LoadingContent"
-               ReferencedContainer = "container:LoadingContent.xcodeproj">
+               BuildableName = "LoadableContentPresentation.framework"
+               BlueprintName = "LoadableContentPresentation"
+               ReferencedContainer = "container:LoadableContentPresentation.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +34,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "64D7869E1C7349DB00E7F816"
-               BuildableName = "LoadingContentTests.xctest"
-               BlueprintName = "LoadingContentTests"
-               ReferencedContainer = "container:LoadingContent.xcodeproj">
+               BuildableName = "LoadableContentPresentation.xctest"
+               BlueprintName = "LoadableContentPresentationTests"
+               ReferencedContainer = "container:LoadableContentPresentation.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -44,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "64D7868A1C73491D00E7F816"
-            BuildableName = "LoadingContent.framework"
-            BlueprintName = "LoadingContent"
-            ReferencedContainer = "container:LoadingContent.xcodeproj">
+            BuildableName = "LoadableContentPresentation.framework"
+            BlueprintName = "LoadableContentPresentation"
+            ReferencedContainer = "container:LoadableContentPresentation.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -67,9 +67,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "64D7868A1C73491D00E7F816"
-            BuildableName = "LoadingContent.framework"
-            BlueprintName = "LoadingContent"
-            ReferencedContainer = "container:LoadingContent.xcodeproj">
+            BuildableName = "LoadableContentPresentation.framework"
+            BlueprintName = "LoadableContentPresentation"
+            ReferencedContainer = "container:LoadableContentPresentation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "64D7868A1C73491D00E7F816"
-            BuildableName = "LoadingContent.framework"
-            BlueprintName = "LoadingContent"
-            ReferencedContainer = "container:LoadingContent.xcodeproj">
+            BuildableName = "LoadableContentPresentation.framework"
+            BlueprintName = "LoadableContentPresentation"
+            ReferencedContainer = "container:LoadableContentPresentation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

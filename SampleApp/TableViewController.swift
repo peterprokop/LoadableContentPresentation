@@ -1,5 +1,5 @@
 import UIKit
-import LoadingContent
+import LoadableContentPresentation
 import DZNEmptyDataSet
 
 class IntsPaginatableTableView: UIView {
