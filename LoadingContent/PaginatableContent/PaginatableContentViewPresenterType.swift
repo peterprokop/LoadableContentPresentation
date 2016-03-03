@@ -42,6 +42,37 @@ public struct Pagination {
 
 extension PaginatableContentViewPresenterType {
 
+    public func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
+        delegate?.contentLoadingStateDidChange(from, to: to)
+    }
+
+}
+
+extension ContentLoadingStateTransitionDelegate where Self: PaginatableContentViewPresenterType {
+    
+    public func contentLoadingStateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
+        switch (from, to) {
+        case
+        (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
+            return false
+        default:
+            return self.delegate?.contentLoadingStateWillChange(from, to: to) ?? true
+        }
+    }
+    
+    public func contentLoadingStateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
+        switch (from, to) {
+        case (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
+            return
+        default:
+            self.delegate?.contentLoadingStateDidChange(from, to: to)
+        }
+    }
+
+}
+
+extension PaginatableContentViewPresenterType {
+
     public var stateMachine: StateMachine<ContentLoadingState> {
         return contentViewPresenter.stateMachine
     }
@@ -65,7 +96,7 @@ extension PaginatableContentViewPresenterType {
             }
 
             var shouldProceed = true
-            if let delegate = self.delegate where !delegate.stateWillChange($0.from, to: $0.to) {
+            if let delegate = self.delegate where !delegate.contentLoadingStateWillChange($0.from, to: $0.to) {
                 shouldProceed = false
             }
 
@@ -144,10 +175,6 @@ extension PaginatableContentViewPresenterType {
         let loadingMoreProgressViewContainerHeight = CGRectGetHeight(paginationProgressViewContainer.view.bounds)
         
         return contentOffset > max(0, contentHeight - contentViewHeight) + loadingMoreProgressViewContainerHeight
-    }
-    
-    func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
-        delegate?.stateDidChange(from, to: to)
     }
     
     public var noContentView: NoContentView {

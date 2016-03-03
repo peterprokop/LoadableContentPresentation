@@ -87,23 +87,4 @@ public class PaginatableContentTableViewPresenter: PaginatableContentViewPresent
         setupInitialState()
     }
     
-    public func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
-        switch (from, to) {
-        case
-        (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
-            return false
-        default:
-            return self.delegate?.stateWillChange(from, to: to) ?? true
-        }
-    }
-    
-    public func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
-        switch (from, to) {
-        case (.LoadingMore, _), (.LoadedMore, _), (_, .LoadingMore), (_, .LoadedMore):
-            return
-        default:
-            self.delegate?.stateDidChange(from, to: to)
-        }
-    }
-    
 }

@@ -80,7 +80,7 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
     
     var loadedContent = [[Int]]()
 
-    func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
+    func contentLoadingStateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
         print("will transition from \(from) to \(to)")
         switch to {
         case .Failed, .NoContent:
@@ -93,7 +93,7 @@ class TableViewController: UIViewController, ContentLoadingStateTransitionDelega
         }
     }
 
-    func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
+    func contentLoadingStateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
         print("did transition from \(from) to \(to)")
     }
 }

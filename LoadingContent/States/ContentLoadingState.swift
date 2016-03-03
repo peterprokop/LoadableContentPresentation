@@ -76,13 +76,13 @@ public func ~=(lhs: ContentLoadingState, rhs: ContentLoadingState) -> Bool {
 
 public protocol ContentLoadingStateTransitionDelegate: class {
     ///If returns true then view will peroperm it's default behaviour for this state transition. Default implementation returns true.
-    func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool
+    func contentLoadingStateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool
 
-    func stateDidChange(from: ContentLoadingState, to: ContentLoadingState)
+    func contentLoadingStateDidChange(from: ContentLoadingState, to: ContentLoadingState)
 }
 
 extension ContentLoadingStateTransitionDelegate {
-    func stateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
+    func contentLoadingStateWillChange(from: ContentLoadingState, to: ContentLoadingState) -> Bool {
         return true
     }
 }

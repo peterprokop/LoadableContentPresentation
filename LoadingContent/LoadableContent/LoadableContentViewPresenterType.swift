@@ -21,7 +21,7 @@ extension LoadableContentViewPresenterType {
     }
     
     public func stateDidChange(from: ContentLoadingState, to: ContentLoadingState) {
-        delegate?.stateDidChange(from, to: to)
+        delegate?.contentLoadingStateDidChange(from, to: to)
     }
 }
 
@@ -35,7 +35,7 @@ extension LoadableContentViewPresenterType {
         stateMachine.addTransitionObserver { [unowned self] in
             
             var shouldProceed = true
-            if let delegate = self.delegate where !delegate.stateWillChange($0.from, to: $0.to) {
+            if let delegate = self.delegate where !delegate.contentLoadingStateWillChange($0.from, to: $0.to) {
                 shouldProceed = false
             }
             
