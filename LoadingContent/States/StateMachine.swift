@@ -17,8 +17,8 @@ public enum Should<T>{
     case TryRedirect(T) //redirect will fail if it's not a valid transition
 }
 
-public enum StateError: ErrorType, CustomStringConvertible {
-    case InvalidStateTransition(State, State)
+public enum StateError<S: State>: ErrorType, CustomStringConvertible {
+    case InvalidStateTransition(S, S)
     
     public var description: String {
         switch self {
